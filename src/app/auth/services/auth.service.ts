@@ -21,6 +21,32 @@ export class AuthService {
 
   constructor(private http: HttpClient ) { }
 
+  registro( nombre: string, password: string, email: string) {
+    const url = `${this.baseUrl}/auth/new`;
+    const body = {
+      nombre,
+      email,
+      password
+    }
+
+    return this.http.post<AuthResponse>(url, body)
+                      .pipe(
+                        tap( resp => {
+                          if (resp.ok) {
+                            localStorage.setItem('token', resp.token!);
+
+                            this._usuario = {
+                              nombre: resp.nombre!,
+                              uid: resp.uid!
+                            }
+                          }
+                        }),
+                        map( resp => resp.ok ),
+                        catchError( err => of(err.error.msg) )
+                      );
+  }
+
+
   login ( email: string, password: string) {
     
     const url = `${this.baseUrl}/auth`;
@@ -70,5 +96,10 @@ export class AuthService {
             }),
             catchError( err => of(false) )
           );
+  }
+
+  logout() {
+    // localStorage.removeItem('token');
+    localStorage.clear();
   }
 }

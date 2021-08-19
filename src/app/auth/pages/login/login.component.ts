@@ -26,8 +26,8 @@ export class LoginComponent{
 
   login() {
 
-    console.log(this.miFormulario.value);
     const { email, password } = this.miFormulario.value;
+
     this.authService.login(email, password)
       .subscribe( ok => {
 
@@ -37,7 +37,6 @@ export class LoginComponent{
           this.router.navigateByUrl('/dashboard');
         }else {
           Swal.fire('Error', ok, 'error');
-          // TODO mostrar mensaje de error
         }
       });
   }
