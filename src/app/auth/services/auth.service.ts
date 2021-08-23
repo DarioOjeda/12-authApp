@@ -24,23 +24,20 @@ export class AuthService {
   registro( nombre: string, password: string, email: string) {
     const url = `${this.baseUrl}/auth/new`;
     const body = {
-      nombre,
       email,
+      nombre,
       password
     }
 
     return this.http.post<AuthResponse>(url, body)
                       .pipe(
-                        tap( resp => {
-                          if (resp.ok) {
-                            localStorage.setItem('token', resp.token!);
-
-                            this._usuario = {
-                              nombre: resp.nombre!,
-                              uid: resp.uid!
+                        tap(
+                          resp => {
+                            if( resp.ok ){
+                              localStorage.setItem('token', resp.token!);
                             }
                           }
-                        }),
+                        ),
                         map( resp => resp.ok ),
                         catchError( err => of(err.error.msg) )
                       );
@@ -60,11 +57,6 @@ export class AuthService {
                 tap( resp => {
                   if (resp.ok) {
                     localStorage.setItem('token', resp.token!);
-
-                    this._usuario = {
-                      nombre: resp.nombre!,
-                      uid: resp.uid!
-                    }
                   }
                 }),
                 map( resp => resp.ok ),
@@ -87,7 +79,8 @@ export class AuthService {
               localStorage.setItem('token', resp.token!);
               this._usuario = {
                 nombre: resp.nombre!,
-                uid: resp.uid!
+                uid: resp.uid!,
+                email: resp.email!
               }
 
               console.log(resp.token);

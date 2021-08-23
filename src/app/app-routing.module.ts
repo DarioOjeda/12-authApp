@@ -21,7 +21,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    useHash: false //hace mas compatibles con navegadores viejos
+    //o en lugares donde yo no soy capaz de alcanzar las rutas(como cuando pongo mi build de produccion directamente en el public de node)
+  })
+],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
